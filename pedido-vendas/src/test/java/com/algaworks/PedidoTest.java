@@ -63,6 +63,11 @@ public class PedidoTest {
         assertResumoDoPedido(1200.0, 96.0);
     }
 
+    @Test(expected = QuantidadeItensInvalidaException.class)
+    public void naoAceitarPedidosComItensComQuantidadesNegativas() {
+        pedido.comItem(0.0, -10);
+    }
+
     private void assertResumoDoPedido(double valorTotal, double desconto) {
         ResumoPedido resumoPedido = pedido.construir().resumo();
 

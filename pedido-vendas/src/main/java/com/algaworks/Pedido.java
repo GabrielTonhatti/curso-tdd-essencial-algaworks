@@ -15,6 +15,8 @@ public class Pedido {
     }
 
     public void adicionarItem(ItemPedido itemPedido) {
+        validarQuantidadeItens(itemPedido);
+
         this.itens.add(itemPedido);
     }
 
@@ -26,5 +28,11 @@ public class Pedido {
         double desconto = calculadoraFaixaDesconto.desconto(valorTotal);
 
         return new ResumoPedido(valorTotal, desconto);
+    }
+
+    private void validarQuantidadeItens(ItemPedido itemPedido) {
+        if (itemPedido.getQuantidade() < 0) {
+            throw new QuantidadeItensInvalidaException();
+        }
     }
 }
