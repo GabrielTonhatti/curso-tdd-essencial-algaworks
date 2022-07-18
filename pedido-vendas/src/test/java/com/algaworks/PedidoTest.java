@@ -2,6 +2,7 @@ package com.algaworks;
 
 import static org.junit.Assert.*;
 
+import com.algaworks.desconto.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +12,15 @@ public class PedidoTest {
 
     @Before
     public void setup() {
-        pedido = new Pedido();
+        CalculadoraFaixaDesconto calculadoraFaixaDesconto = new CalculadoraDescontoTerceiraFaixa(
+                new CalculadoraDescontoSegundaFaixa(
+                        new CalculadoraDescontoPrimeiraFaixa(
+                                new SemDesconto(null)
+                        )
+                )
+        );
+
+        pedido = new Pedido(calculadoraFaixaDesconto);
     }
 
     @Test
