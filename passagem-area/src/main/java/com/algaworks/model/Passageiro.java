@@ -3,11 +3,11 @@ package com.algaworks.model;
 public class Passageiro {
 
     private String nome;
-    private TipoPassageiro tipoPassageiro;
+    private TipoPassageiro tipo;
 
     public Passageiro(String nome, TipoPassageiro tipoPassageiro) {
         this.nome = nome;
-        this.tipoPassageiro = tipoPassageiro;
+        this.tipo = tipoPassageiro;
     }
 
     public String getNome() {
@@ -18,12 +18,12 @@ public class Passageiro {
         this.nome = nome;
     }
 
-    public TipoPassageiro getTipoPassageiro() {
-        return tipoPassageiro;
+    public TipoPassageiro getTipo() {
+        return tipo;
     }
 
-    public void setTipoPassageiro(TipoPassageiro tipoPassageiro) {
-        this.tipoPassageiro = tipoPassageiro;
+    public void setTipo(TipoPassageiro tipo) {
+        this.tipo = tipo;
     }
 
 }
