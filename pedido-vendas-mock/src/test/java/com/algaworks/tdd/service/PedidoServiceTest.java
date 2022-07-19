@@ -2,6 +2,7 @@ package com.algaworks.tdd.service;
 
 import com.algaworks.tdd.email.NotificadorEmail;
 import com.algaworks.tdd.model.Pedido;
+import com.algaworks.tdd.model.StatusPedido;
 import com.algaworks.tdd.model.builder.PedidoBuilder;
 import com.algaworks.tdd.repository.Pedidos;
 import com.algaworks.tdd.sms.NotificadorSms;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class PedidoServiceTest {
 
@@ -65,6 +67,32 @@ public class PedidoServiceTest {
     public void deveNotificarPorSms() {
         pedidoService.lancar(pedido);
         verify(notificadorSms).executar(pedido);
+    }
+
+    @Test
+    public void devePagarPedidoPendente() {
+        Long codigoPedido = 135L;
+        Pedido pedidoPendente = new Pedido();
+        pedidoPendente.setStatus(StatusPedido.PENDENTE);
+
+        when(pedidos.buscarPeloCodigo(codigoPedido))
+                .thenReturn(pedidoPendente);
+
+        Pedido pedidoPago = pedidoService.pagar(codigoPedido);
+
+        assertEquals(StatusPedido.PAGO, pedidoPago.getStatus());
+    }
+
+    @Test(expected = StatusPedidoInvalidoException.class)
+    public void deveNegarPagamento() {
+        Long codigoPedido = 135L;
+        Pedido pedidoPendente = new Pedido();
+        pedidoPendente.setStatus(StatusPedido.PAGO);
+
+        when(pedidos.buscarPeloCodigo(codigoPedido))
+                .thenReturn(pedidoPendente);
+
+        Pedido pedidoPago = pedidoService.pagar(codigoPedido);
     }
 
 }

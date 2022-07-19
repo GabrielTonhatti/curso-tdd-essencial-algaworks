@@ -8,4 +8,8 @@ public class Pedidos {
         System.out.println("Salvando no banco de dados...");
     }
 
+    public Pedido buscarPeloCodigo(Long codigo) {
+        return new Pedido();
+    }
+
 }

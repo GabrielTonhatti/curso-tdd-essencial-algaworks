@@ -1,6 +1,7 @@
 package com.algaworks.tdd.service;
 
 import com.algaworks.tdd.model.Pedido;
+import com.algaworks.tdd.model.StatusPedido;
 import com.algaworks.tdd.repository.Pedidos;
 
 import java.util.List;
@@ -24,4 +25,14 @@ public class PedidoService {
         return imposto;
     }
 
+    public Pedido pagar(Long codigo) {
+        Pedido pedido = pedidos.buscarPeloCodigo(codigo);
+
+        if (!pedido.getStatus().equals(StatusPedido.PENDENTE)) {
+            throw new StatusPedidoInvalidoException();
+        }
+
+        pedido.setStatus(StatusPedido.PAGO);
+        return pedido;
+    }
 }
