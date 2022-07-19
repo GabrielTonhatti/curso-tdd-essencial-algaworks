@@ -1,28 +1,25 @@
 package com.algaworks.tdd.service;
 
-import com.algaworks.tdd.email.NotificadorEmail;
 import com.algaworks.tdd.model.Pedido;
 import com.algaworks.tdd.repository.Pedidos;
-import com.algaworks.tdd.sms.NotificadorSms;
+
+import java.util.List;
 
 public class PedidoService {
 
     private final Pedidos pedidos;
-    private final NotificadorEmail notificadorEmail;
-    private final NotificadorSms notificadorSms;
+    private final List<AcaoLancamentoPedido> acoes;
 
-    public PedidoService(Pedidos pedidos, NotificadorEmail notificadorEmail, NotificadorSms notificadorSms) {
+    public PedidoService(Pedidos pedidos, List<AcaoLancamentoPedido> acoes) {
         this.pedidos = pedidos;
-        this.notificadorEmail = notificadorEmail;
-        this.notificadorSms = notificadorSms;
+        this.acoes = acoes;
     }
 
     public double lancar(Pedido pedido) {
         double imposto = pedido.getValor() * 0.1;
 
         pedidos.guardar(pedido);
-        notificadorEmail.enviar(pedido);
-        notificadorSms.notificar(pedido);
+        acoes.forEach(acao -> acao.executar(pedido));
 
         return imposto;
     }

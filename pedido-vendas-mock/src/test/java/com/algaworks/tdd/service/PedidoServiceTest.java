@@ -10,6 +10,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
@@ -31,7 +34,8 @@ public class PedidoServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        pedidoService = new PedidoService(pedidos, notificadorEmail, notificadorSms);
+        List<AcaoLancamentoPedido> acoes = Arrays.asList(notificadorEmail, notificadorSms);
+        pedidoService = new PedidoService(pedidos, acoes);
         pedido = new PedidoBuilder()
                 .comValor(100.0)
                 .para("João", "joao@joao.com", "9999-0000")
@@ -54,13 +58,13 @@ public class PedidoServiceTest {
     @Test
     public void deveNotificarPorEmail() {
         pedidoService.lancar(pedido);
-        verify(notificadorEmail).enviar(pedido);
+        verify(notificadorEmail).executar(pedido);
     }
 
     @Test
     public void deveNotificarPorSms() {
         pedidoService.lancar(pedido);
-        verify(notificadorSms).notificar(pedido);
+        verify(notificadorSms).executar(pedido);
     }
 
 }
